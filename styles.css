@@ -36,7 +36,7 @@ p {
 	color: #4c4c4c;
 }
 
-button {
+input[type=submit] {
 	display: block;
 	width: 120px;
 	height: 60px;
@@ -49,6 +49,7 @@ button {
 	border-radius: 10px;
 	margin-right: auto;
 	margin-left: auto;
+	text-decoration: none;
 }
 
 #waldoBasic {
@@ -72,6 +73,70 @@ button {
 
 #timeLapsed {
 	display: none;
+}
+
+#modal{
+  background: rgba(0,0,0,0.5);
+  position: fixed;
+  z-index: 9950;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+}
+#modalContent{
+  width: 600px;
+  height: 350px;
+  position: fixed;
+  z-index: 9999;
+  left: 50%;
+  top: 50%;
+  margin-left: -350px;
+  margin-top: -250px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid #ccc;
+  padding: 100px 30px 30px 30px;
+  box-shadow: 0px 0px 12px black;
+}
+
+#modalMessage {
+  font-family: sans-serif;
+  font-size: 3em;
+  text-align: center;
+}
+
+#modalNext input[type=submit]{
+	display: block;
+	position: absolute;
+	bottom: 20px;
+	right: 20px;
+	width: 180px;
+	height: 70px;
+	font-family: sans-serif;
+	font-size: 1.7em;
+	text-align: center;
+	padding: 10px 10px 10px 10px;
+	color: white;
+	background-color: #e61934;
+	border: none;
+	border-radius: 10px;
+	margin-right: auto;
+	margin-left: auto;
+	text-decoration: none;
+}
+
+#modalTimer {
+	text-align: center;
+	font-family: sans-serif;
+	font-weight: bold;
+	font-size: 5em;
+	line-height: 2em;
+	text-shadow: -1px 0 yellow, 0 1px yellow, 1px 0 yellow, 0 -1px yellow;
+	-webkit-transform:scale(1,1.5); /* Safari and Chrome */
+    -moz-transform:scale(1,1.5); /* Firefox */
+    -ms-transform:scale(1,1.5); /* IE 9 */
+    -o-transform:scale(1,1.5); /* Opera */
+    transform:scale(1,1.5); /* W3C */
 }
 
 
