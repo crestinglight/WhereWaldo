@@ -5,11 +5,25 @@ def writeToFile(score, millis)
 	end
 end
 
+def getHighScores()
+	topTen = sortCSV()
+	return topTen
+end
+
 def sortCSV()
-	scoreCSV = CSV.read 'waldoScores.csv'
+	scoreCSV = CSV.read('waldoScores.csv')
+	sorted = scoreCSV.sort
+	topTenBlah = turnIntoArray(sorted)
+	return topTenBlah
+end
 
-	scoreCSV.sort! { |b, a| a[0].to_i <=> b[0].to_i }
-	scoreCSV.uniq!(&:first)
-
-	scoreCSV.each { |line| p line }
+def turnIntoArray(sortedArray)
+	newArray = []
+	for i in 0..9
+		if sortedArray[i] != nil
+			newArray = newArray.push(sortedArray[i])
+		else
+		end
+	end
+	return newArray
 end

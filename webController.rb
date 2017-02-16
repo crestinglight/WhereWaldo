@@ -13,4 +13,6 @@ get("/puzzle01"){
 
 get("/puzzle01score"){
 	writeToFile(params["scoreTime"], params["millis"])
+	scores = getHighScores().to_s
+	return scores
 }

@@ -87,7 +87,6 @@ window.addEventListener('load', function(){
 	//			days:hours:minutes:seconds.hundredths
 	function stringItTogether(arrayOfTimes){
 		var stringy = arrayOfTimes[4] + ":" + arrayOfTimes[3] + ":" + arrayOfTimes[2] + ":" + arrayOfTimes[1] + "." + arrayOfTimes[0]
-		console.log(stringy);
 		return stringy;
 	}
 
@@ -102,6 +101,7 @@ window.addEventListener('load', function(){
 	function displayModal(){
 		var modal = document.getElementById("modal");
 		var modalContent = document.getElementById("modalContent");
+		var modalHighScores = document.getElementById("modalHighScores");
 		modal.style.display = "block";
 		modalContent.style.display = "block";
 	}
@@ -114,17 +114,52 @@ window.addEventListener('load', function(){
 		scoreRequest.open('GET', 'http://localhost:4567/puzzle01score?scoreTime=' + timeData + '&millis=' + millis);
 		//This function executes when the server responds that it received the request.
 		//Example: If a user clicks "like" on a facebook post, when the server responds that it received the request, only then will it update the like counter.
-		scoreRequest.onload = function(){
-			console.log("High Score Saved.");
+		scoreRequest.onload = function(e){
+		    var topTenArray = e.target.responseText;
+		    var parsedArray = JSON.parse(topTenArray);
+		    formatHighScores(parsedArray);
 		};
 		//This line actually sends our request.
 		scoreRequest.send();
 	}
 
+	function highScoreReveal(e){
+		e.preventDefault();
+		var highScoreDisplay = document.getElementById("modalHighScore");
+		var timerDisplay = document.getElementById("modalContent");
+		var hsTitle = document.getElementById("modalHighScoresTitle");
+		var actualHS = document.getElementById("actualHighScores");
+		if (highScoreDisplay.style.display === "none"){
+			actualHS.innerHTML = highScoreString;
+			hsTitle.innerHTML = "HIGH SCORES";
+			timerDisplay.style.display = "none";
+			highScoreDisplay.style.display = "block";
+		}
+		else {
+			e.preventDefault();
+			return false;
+		}
+		
+	}
+
+	function formatHighScores(hsArray){
+		var highScoreID = document.getElementById("actualHighScores");
+		var hsString = "";
+		
+		for (var i = 0; i < hsArray.length; i++){
+			hsString = hsString + hsArray[i][0] + "<br>";
+		}
+		highScoreString = hsString;
+		return highScoreString;
+	}
+
 	var startTimer = Date.now();
 	var timerData = "";
+	var highScoreString = "";
 	var picClick = document.getElementById("WaldoLevel1");
+	var highScoreButtonClick = document.getElementById("modalHighScoreButton");
 	picClick.addEventListener('click', getXY);
+	highScoreButtonClick.addEventListener('click', highScoreReveal);
 
 });
 
