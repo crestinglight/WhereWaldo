@@ -6,7 +6,11 @@ window.addEventListener('load', function(){
 		var yPosition = e.offsetY;
 		//This if statement checks to see if "didYouFindWaldo" returns true. If so, we move on to stop the timer.
 		if (didYouFindWaldo(xPosition, yPosition)){
-			endTimer();
+			timerData = endTimer();
+			var endingTime = Date.now();
+			var milliseconds = endingTime - startTimer;
+			var millis = String(milliseconds);
+			sendScoreToServer(timerData, millis);
 		}
 	}
 
@@ -27,6 +31,7 @@ window.addEventListener('load', function(){
 		var totalTime = endingTime - startTimer;
 		var timeString = convertToReadableTime(totalTime);
 		fillModal(timeString);
+		return timeString;
 	}
 
 	//This function takes in milliseconds and breaks them down to a more readable format of days, hours, minutes, seconds, and hundredths of a second. It then pushes those variables into an array of [hundredths, seconds, minutes, hours, days].
@@ -101,7 +106,23 @@ window.addEventListener('load', function(){
 		modalContent.style.display = "block";
 	}
 
+	function sendScoreToServer(timeData, millis){
+		
+		//Making a new request.
+		var scoreRequest = new XMLHttpRequest();
+		//This line passes our painting data into a query string that Sinatra can use and determine what to do with.
+		scoreRequest.open('GET', 'http://localhost:4567/puzzle01score?scoreTime=' + timeData + '&millis=' + millis);
+		//This function executes when the server responds that it received the request.
+		//Example: If a user clicks "like" on a facebook post, when the server responds that it received the request, only then will it update the like counter.
+		scoreRequest.onload = function(){
+			console.log("High Score Saved.");
+		};
+		//This line actually sends our request.
+		scoreRequest.send();
+	}
+
 	var startTimer = Date.now();
+	var timerData = "";
 	var picClick = document.getElementById("WaldoLevel1");
 	picClick.addEventListener('click', getXY);
 
