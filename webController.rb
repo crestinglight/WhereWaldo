@@ -16,3 +16,8 @@ get("/puzzle01score"){
 	scores = getHighScores().to_s
 	return scores
 }
+
+get("/puzzle01validate"){
+	tf = validateXY(params["xPos"], params["yPos"])
+	return tf.to_s
+}

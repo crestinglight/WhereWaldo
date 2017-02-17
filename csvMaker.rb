@@ -13,8 +13,8 @@ end
 def sortCSV()
 	scoreCSV = CSV.read('waldoScores.csv')
 	sorted = scoreCSV.sort
-	topTenBlah = turnIntoArray(sorted)
-	return topTenBlah
+	topTenArray = turnIntoArray(sorted)
+	return topTenArray
 end
 
 def turnIntoArray(sortedArray)
@@ -26,4 +26,14 @@ def turnIntoArray(sortedArray)
 		end
 	end
 	return newArray
+end
+
+def validateXY(x, y)
+	intX = x.to_i
+	intY = y.to_i
+	if (intX > 380) && (intX < 419) && (intY > 262) && (intY < 302)
+		return true
+	else
+		return false
+	end
 end
