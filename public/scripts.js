@@ -13,9 +13,6 @@ window.addEventListener('load', function(){
 			var millis = String(milliseconds);
 			sendScoreToServer(timerData, millis);
 		}
-		else {
-			console.log("Fuck off");
-		}
 	}
 
 	//Takes the x and y coordinates passed from the getXY function and determines if they are within the bounds of Waldo. If not, nothing happens. If so, we return true so that we can move on to ending the timer.
@@ -23,20 +20,19 @@ window.addEventListener('load', function(){
 		var response = false;
 		//Making a new request.
 		var xyRequest = new XMLHttpRequest();
-		debugger;
 		//This line passes our x and y coordinates into a query string that Sinatra can use and determine what to do with.
 		xyRequest.open('GET', 'http://localhost:4567/puzzle01validate?xPos=' + x + '&yPos=' + y);
 		//This function executes when the server responds that it received the request.
 		//Example: If a user clicks "like" on a facebook post, when the server responds that it received the request, only then will it update the like counter.
 		xyRequest.onload = function(e){
 			if (e.target.responseText === "true"){
+				debugger;
 				response = true;
 				return response;
 			}
 		};
 		//This line actually sends our request.
 		xyRequest.send();
-		//return response;
 	}
 
 	//Ending the timer means we take the new date and subtract the old one. This will give us the number of milliseconds that have passed since the page loaded. We then call on a function to make those milliseconds readable.
