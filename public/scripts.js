@@ -1,12 +1,12 @@
 window.addEventListener('load', function(){
 
-	//This function gets the X and Y coordinates of where the user clicked, relative to the image.
-	function getXY(e){
-		var xPosition = e.offsetX;
-		var yPosition = e.offsetY;
+	function saveScore(e){
+		var response = false;
+		if (e.target.responseText === "true"){
+			response = true;
+		}
 		//This if statement checks to see if "didYouFindWaldo" returns true. If so, we move on to stop the timer.
-		if (didYouFindWaldo(xPosition, yPosition) === true){
-			debugger;
+		if (response === true){
 			timerData = endTimer();
 			var endingTime = Date.now();
 			var milliseconds = endingTime - startTimer;
@@ -15,22 +15,23 @@ window.addEventListener('load', function(){
 		}
 	}
 
-	//Takes the x and y coordinates passed from the getXY function and determines if they are within the bounds of Waldo. If not, nothing happens. If so, we return true so that we can move on to ending the timer.
-	function didYouFindWaldo(x, y){
-		var response = false;
+	//This function gets the X and Y coordinates of where the user clicked, relative to the image.
+	function getXY(e){
+		var xPosition = e.offsetX;
+		var yPosition = e.offsetY;
+		//Sending x and y to the server.
+		sendInfoToServer(xPosition, yPosition);
+	}
+
+	//Takes the x and y coordinates passed from the getXY function and sends them to the server to determine whether or not these coordinates are correct for Waldo.
+	function sendInfoToServer(x, y){
 		//Making a new request.
 		var xyRequest = new XMLHttpRequest();
 		//This line passes our x and y coordinates into a query string that Sinatra can use and determine what to do with.
 		xyRequest.open('GET', 'http://localhost:4567/puzzle01validate?xPos=' + x + '&yPos=' + y);
-		//This function executes when the server responds that it received the request.
+		//This function executes when the server responds that it received the request. It does what it is instructed to do with those coordinates.
 		//Example: If a user clicks "like" on a facebook post, when the server responds that it received the request, only then will it update the like counter.
-		xyRequest.onload = function(e){
-			if (e.target.responseText === "true"){
-				debugger;
-				response = true;
-				return response;
-			}
-		};
+		xyRequest.onload = saveScore;
 		//This line actually sends our request.
 		xyRequest.send();
 	}
